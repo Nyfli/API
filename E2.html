@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Définit l'encodage des caractères -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Définit les propriétés de la vue -->
+    <title>Document</title> <!-- Titre de la page -->
+</head>
+<body>
+    <h1>Filme</h1> <!-- Titre principal de la page -->
+    <input id="recherche" type="text"/> <!-- Champ de texte pour saisir le nom du film -->
+    <input id="search" type="submit"> <!-- Bouton de recherche -->
+
+    <div id="filme"></div> <!-- Conteneur où seront affichées les informations sur le film -->
+    <script>
+        // Fonction pour récupérer les données d'un film à partir de l'API The Movie Database (TMDb)
+        function fetchFilme(filme){
+            return fetch('https://api.themoviedb.org/3/movie/' + filme + '?api_key='+ '&language=fr-FR')
+            .then(response => response.json()); // Retourne la réponse au format JSON
+        }
+
+        // Fonction asynchrone pour afficher les informations sur un film
+        async function displayFilme(filme) {
+            const data = await fetchFilme(filme); // Récupérer les données du film
+            document.querySelector('#filme').innerHTML = `
+                <h1>${data.title}</h1> <!-- Titre du film -->
+                <img src="https://image.tmdb.org/t/p/original/${data.poster_path}" alt="${data.name}"> <!-- Affiche l'affiche du film -->
+            `;
+        }
+
+        // Écouteur d'événement pour le clic sur le bouton de recherche
+        document.querySelector('#search').addEventListener('click', () => {
+            const recherche = document.querySelector('#recherche').value; // Récupérer la valeur saisie dans le champ de texte
+            displayFilme(recherche); // Afficher les informations sur le film
+        });
+
+    </script>
+    
+</body>
+</html>

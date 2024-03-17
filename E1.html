@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pokemon</h1>
+    <input id="recherche" type="text"/> <!-- Champ de texte pour saisir le nom du Pokémon -->
+    <input id="search" type="submit"> <!-- Bouton de recherche -->
+
+    <div id="pokemon"></div> <!-- Conteneur où seront affichées les informations sur le Pokémon -->
+    <script>
+        // Fonction pour récupérer les données d'un Pokémon à partir de l'API Pokémon
+        function fetchPokemon(pokemon){
+            return fetch('https://pokeapi.co/api/v2/pokemon/' + pokemon).then(
+                response => response.json()
+            );
+        }
+
+        // Fonction asynchrone pour afficher les informations sur un Pokémon
+        async function displayPokemon(pokemon) {
+            const data = await fetchPokemon(pokemon); // Récupérer les données du Pokémon
+            document.querySelector('#pokemon').innerHTML = `
+                <h1>${data.name}</h1> <!-- Nom du Pokémon -->
+                <img src="${data.sprites.front_default}" alt="${data.name}"> <!-- Image du Pokémon -->
+            `;
+        }
+
+        // Écouteur d'événement pour le clic sur le bouton de recherche
+        document.querySelector('#search').addEventListener('click', () => {
+            const recherche = document.querySelector('#recherche').value; // Récupérer la valeur saisie dans le champ de texte
+            displayPokemon(recherche); // Afficher les informations sur le Pokémon
+        });
+
+    </script>
+    
+</body>
+</html>
